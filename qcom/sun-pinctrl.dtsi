@@ -384,32 +384,7 @@
 	};
 
 	tdm0_sd1 {
-		tdm0_sd1_sleep: tdm0_sd1_sleep {
-			mux {
-				pins = "gpio128";
-				function = "gpio";
-			};
-
-			config {
-				pins = "gpio128";
-				drive-strength = <2>;   /* 2 mA */
-				bias-pull-down;         /* PULL DOWN */
-				input-enable;
-			};
-		};
-
-		tdm0_sd1_active: tdm0_sd1_active {
-			mux {
-				pins = "gpio128";
-				function = "i2s0_data1";
-			};
-
-			config {
-				pins = "gpio128";
-				drive-strength = <8>;   /* 8 mA */
-				bias-disable;           /* NO PULL */
-			};
-		};
+		status = "disabled";
 	};
 
 	tdm1_clk {

@@ -42,8 +42,12 @@ dtbo-y += sun-audio.dtbo \
                 tuna-audio-mtp.dtbo \
                 tuna7-audio-mtp.dtbo \
                 tuna-audio-mtp-qmp1000.dtbo \
-                tuna-audio-qrd.dtbo \
                 tuna-audio-rcm.dtbo
+ifeq ($(CONFIG_NOTHING_IS_METROID), y)
+dtbo-y += Metroid/tuna-audio-qrd.dtbo
+else
+dtbo-y += tuna-audio-qrd.dtbo
+endif
 endif
 
 
@@ -54,12 +58,18 @@ dtbo-y += kera-audio.dtbo \
                 kera-iot-audio-cdp.dtbo \
                 kera-audio-mtp.dtbo \
                 kera-audio-mtp-qmp1000.dtbo \
-                kera-audio-qrd.dtbo \
                 kera-audio-rcm.dtbo \
                 kera-audio-rcm-orne.dtbo \
                 kera-audio-idp.dtbo \
                 kera-audio-mtp-wcn7750.dtbo \
                 kera-audio-evk-wcd9378-dmic.dtbo
+
+ifeq ($(CONFIG_NOTHING_IS_FROGGERPRO), y)
+dtbo-y +=   FroggerPro/kera-audio-qrd.dtbo
+else
+dtbo-y +=   kera-audio-qrd.dtbo
+endif
+
 endif
 
  always-y    := $(dtb-y) $(dtbo-y)

@@ -1,4 +1,8 @@
 ifeq ($(CONFIG_ARCH_SUN),y)
+# Modify by tanbaohong BELLP-385 20250820 begin
+ifeq ($(CONFIG_NOTHING_IS_FROGGERPRO),y)
+dtbo-y += st/kera-nfc_froggerpro.dtbo
+else
 dtbo-y += nxp/sun-nfc.dtbo \
           nxp/sun-nfc-cdp.dtbo \
           nxp/sun-nfc-mtp.dtbo \
@@ -18,7 +22,8 @@ dtbo-y += st/sun-nfc.dtbo \
           st/tuna-nfc.dtbo \
           st/kera-nfc.dtbo
 endif
-
+endif
+# Modify by tanbaohong BELLP-385 20250820 end
 ifeq ($(CONFIG_ARCH_PARROT),y)
 dtbo-y += nxp/parrot-nfc.dtbo \
           nxp/parrot-nfc-qrd.dtbo \

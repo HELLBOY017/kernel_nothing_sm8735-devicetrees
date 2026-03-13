@@ -335,10 +335,6 @@
 
 &qupv3_se8_i2c {
 	status = "ok";
-	qcom,high-perf;
-	qcom,clk-freq-out = <1000000>;
-	qcom,pm-ctrl-client;
-
 	eeprom_asc_front: qcom,eeprom1 {
 		cell-index = <4>;
 		reg = <0x58>;
@@ -369,7 +365,7 @@
 		clock-names = "cam_clk";
 		clock-cntl-level = "nominal";
 		clock-rates = <24000000>;
-		status = "ok";
+		status = "disabled";
 	};
 
 	/* OV32C4C + ASC (Front) */
@@ -409,6 +405,6 @@
 		clock-names = "cam_clk";
 		clock-cntl-level = "nominal";
 		clock-rates = <24000000>;
-		status = "ok";
+		status = "disabled";
 	};
 };

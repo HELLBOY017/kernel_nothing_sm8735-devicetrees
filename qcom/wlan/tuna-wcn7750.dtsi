@@ -172,6 +172,8 @@
 		qcom,icc-path-count = <2>;
 		qcom,bus-bw-cfg-count = <9>;
 
+		use-nv-mac;
+
 		/* ddr_type = 8(LPDDR5) */
 
 		ddr_cfg@0 {

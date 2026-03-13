@@ -54,7 +54,7 @@
 
 	vddio-supply = <&L8B>;
 	vci-supply = <&L19B>;
-	vdd-supply = <&L1G>;
+	/*vdd-supply = <&L1G>;*/
 };
 
 &sde_dsi1 {

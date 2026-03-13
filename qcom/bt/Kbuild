@@ -9,9 +9,14 @@ dtbo-y += tuna-kiwi-bt.dtbo
 endif
 
 ifeq ($(CONFIG_ARCH_KERA), y)
+# shangfei add bt device tree for Froggerpro SQ772-331 20250818
+ifeq ($(CONFIG_NOTHING_IS_FROGGERPRO), y)
+dtbo-y += kera-qca6750-bt_froggerpro.dtbo
+else
 dtbo-y += kera-qca6750-bt.dtbo
 dtbo-y += kera-qca6750-bt-qmb.dtbo
 dtbo-y += kera-wcn7750-bt.dtbo
+endif
 endif
 
 ifeq ($(CONFIG_ARCH_SUN), y)

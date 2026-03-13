@@ -198,9 +198,10 @@
 		reg = <0x0 0x99d80000 0x0 0x80000>;
 	};
 
-	adspslpi_mem: adspslpi_region@99e00000 {
+	/* Audio modify adsp mem size-32M for add voice-lvve algorithm. 2025.01.22 */
+	adspslpi_mem: adspslpi_region@0x99e00000 {
 		no-map;
-		reg = <0x0 0x99e00000 0x0 0x3200000>;
+		reg = <0x0 0x99e00000 0x0 0x5a80000>;
 	};
 
 	wlan_msa_mem: wlan_msa_region@a6400000 {

@@ -89,9 +89,9 @@
 };
 
 &pmk8550_vadc {
-	pmih010x_sys_therm_8 {
-		reg = <PMIH010X_ADC5_GEN4_AMUX_THM4_USB_THERM_100K_PU>;
-		label = "pmih010x_usb_therm";
+	pmih010x_wls_ntc {
+		reg = <PMIH010X_ADC5_GEN4_AMUX5_GPIO18_100K_PU>;
+		label = "pmih010x_wls_ntc";
 		qcom,ratiometric;
 		qcom,hw-settle-time = <200>;
 		qcom,pre-scaling = <1 1>;
@@ -99,9 +99,9 @@
 		qcom,adc5-gen4;
 	};
 
-	pmih010x_sys_therm_7 {
+	pmih010x_sc_buck_ntc {
 		reg = <PMIH010X_ADC5_GEN4_AMUX4_GPIO12_100K_PU>;
-		label = "pmih010x_wls_therm";
+		label = "pmih010x_sc_buck_ntc";
 		qcom,ratiometric;
 		qcom,pre-scaling = <1 1>;
 		qcom,adc-tm-type = <1>;
@@ -170,7 +170,7 @@
 };
 
 &thermal_zones {
-	sys-therm-7 {
+	sc_buck_ntc {
 		polling-delay-passive = <0>;
 		polling-delay = <0>;
 		thermal-sensors = <&pmk8550_vadc PMIH010X_ADC5_GEN4_AMUX4_GPIO12_100K_PU>;
@@ -189,10 +189,10 @@
 		};
 	};
 
-	sys-therm-8 {
+	wls_ntc {
 		polling-delay-passive = <0>;
 		polling-delay = <0>;
-		thermal-sensors = <&pmk8550_vadc PMIH010X_ADC5_GEN4_AMUX_THM4_USB_THERM_100K_PU>;
+		thermal-sensors = <&pmk8550_vadc PMIH010X_ADC5_GEN4_AMUX5_GPIO18_100K_PU>;
 		trips {
 			active-config0 {
 				temperature = <125000>;
@@ -310,6 +310,26 @@
 	};
 
 	socd {
+		trips {
+			thermal-engine-trip {
+				temperature = <100>;
+				hysteresis = <0>;
+				type = "passive";
+			};
+
+			thermal-hal-trip {
+				temperature = <100>;
+				hysteresis = <0>;
+				type = "passive";
+			};
+
+			socd-trip {
+				temperature = <100>;
+				hysteresis = <0>;
+				type = "passive";
+			};
+		};
+
 		cooling-maps {
 			socd_apc1 {
 				trip = <&socd_trip>;
@@ -337,4 +357,32 @@
 &eusb2_phy0 {
 	dummy-supply = <&pmih010x_eusb2_repeater>;
 	usb-repeater = <&pmih010x_eusb2_repeater>;
+};
+
+&pmih010x_eusb2_repeater {
+	qcom,param-override-seq =
+		/* <value reg_offset> */
+		/* Adjust HS trasmit amplitude */
+		<0x9 0x51
+		 0x1 0x52
+		 0x6 0x53
+		 0x3 0x54
+		 0x3 0x55
+		 0x0 0x56
+		 0x7 0x57
+		 0x2 0x58
+		 0x3 0x59>;
+
+	qcom,host-param-override-seq =
+		/* <value reg_offset> */
+		/* Adjust HS trasmit amplitude */
+		<0x7 0x51
+		 0x1 0x52
+		 0x7 0x53
+		 0x3 0x54
+		 0x0 0x55
+		 0x0 0x56
+		 0x1 0x57
+		 0x2 0x58
+		 0x0 0x59>;
 };

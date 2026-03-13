@@ -42,7 +42,7 @@
 #include "dsi-panel-vtdr6130-qsync-dsc-fhd-plus-144hz-cmd.dtsi"
 #include "dsi-panel-vtdr6130-qsync-dsc-fhd-plus-144hz-video.dtsi"
 #include "dsi-panel-ext-bridge-1080p.dtsi"
-
+#include "dsi-panel-rm692j0-boe-dsc-fhd-plus-120hz-cmd.dtsi"
 #include "tuna-sde-display-pinctrl.dtsi"
 
 &soc {
@@ -95,6 +95,14 @@
 			qcom,supply-post-on-sleep = <0>;
 		};
 	};
+	vddic_1v8: vddic_1v8 {
+		compatible = "qti-regulator-fixed";
+		regulator-name = "vddic_1v8";
+		startup-delay-us = <0>;
+		enable-active-high;
+		regulator-boot-on;
+		gpio = <&tlmm 148 0>;
+	};
 
 	dsi_panel_pwr_supply_lcd: dsi_panel_pwr_supply_lcd {
 		#address-cells = <1>;
@@ -117,6 +125,45 @@
 			qcom,supply-max-voltage = <6000000>;
 			qcom,supply-enable-load = <260000>;
 			qcom,supply-disable-load = <100>;
+		};
+	};
+
+	dsi_panel_pwr_supply_amoled: dsi_panel_pwr_supply_amoled {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1980000>;
+			qcom,supply-enable-load = <154000>;
+			qcom,supply-disable-load = <45000>;
+			qcom,supply-post-on-sleep = <3>;
+			qcom,supply-post-off-sleep = <3>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "vddic_1v8";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <0>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <5>;
+			qcom,supply-post-off-sleep = <8>;
+		};
+
+		qcom,panel-supply-entry@2 {
+			reg = <2>;
+			qcom,supply-name = "vci";
+			qcom,supply-min-voltage = <3000000>;
+			qcom,supply-max-voltage = <3544000>;
+			qcom,supply-enable-load = <10000>;
+			qcom,supply-disable-load = <300>;
+			qcom,supply-post-on-sleep = <5>;
+			qcom,supply-post-off-sleep = <3>;
+			qcom,supply-pre-off-sleep = <3>;
 		};
 	};
 
@@ -158,6 +205,36 @@
 };
 
 /* PHY TIMINGS REVISION YYG with reduced margins */
+&dsi_rm692j0_boe_amoled_120hz_cmd {
+	qcom,dsi-select-clocks = "pll_byte_clk0", "pll_dsi_clk0";
+	qcom,esd-check-enabled;
+	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
+	qcom,mdss-dsi-panel-status-command = [06 01 00 01 0A 00 01 0a];
+	qcom,mdss-dsi-panel-status-command-state = "dsi_lp_mode";
+	qcom,mdss-dsi-panel-status-value = <0x9C>;
+	qcom,mdss-dsi-panel-status-read-length = <1>;
+
+	qcom,mdss-dsi-display-timings {
+		timing@0 {
+			qcom,mdss-dsi-panel-phy-timings = [00 24 0A 0A 1A 19 09
+					0A 09 02 04 00 1E 0F];
+			qcom,display-topology = <2 2 1>;
+			qcom,default-topology-index = <0>;
+		};
+		timing@1 {
+			qcom,mdss-dsi-panel-phy-timings = [00 24 0A 0A 1A 25 09
+					0A 09 02 04 00 1E 0F];
+			qcom,display-topology = <2 2 1>;
+			qcom,default-topology-index = <0>;
+		};
+		timing@2 {
+			qcom,mdss-dsi-panel-phy-timings = [00 24 0A 0A 1A 25 09
+					0A 09 02 04 00 1E 0F];
+			qcom,display-topology = <2 2 1>;
+			qcom,default-topology-index = <0>;
+		};
+	};
+};
 
 &dsi_vtdr6130_amoled_cmd {
 	qcom,dsi-select-clocks = "pll_byte_clk0", "pll_dsi_clk0";

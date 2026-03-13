@@ -9,6 +9,7 @@
 #include "tuna-qrd.dtsi"
 #include "tuna-pmih010x.dtsi"
 #include "pmd802x.dtsi"
+#include "tuna-arbok-common-overlay.dtsi"
 
 / {
 	model = "Qualcomm Technologies, Inc. Tuna QRD";

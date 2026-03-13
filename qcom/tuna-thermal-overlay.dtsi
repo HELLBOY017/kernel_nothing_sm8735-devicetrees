@@ -193,3 +193,21 @@
 		};
 	};
 };
+
+&soc {
+    shell_front {
+        compatible = "nothing,virtual-ntc";
+    };
+
+    shell_frame {
+        compatible = "nothing,virtual-ntc";
+    };
+
+    shell_back {
+        compatible = "nothing,virtual-ntc";
+    };
+
+    shell_max {
+        compatible = "nothing,virtual-ntc";
+    };
+};

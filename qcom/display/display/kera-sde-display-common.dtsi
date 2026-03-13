@@ -23,7 +23,7 @@
 #include "dsi-panel-vtdr6130-dsc-fhd-plus-60hz-video.dtsi"
 #include "dsi-panel-vtdr6130-qsync-dsc-fhd-plus-144hz-cmd.dtsi"
 #include "dsi-panel-vtdr6130-qsync-dsc-fhd-plus-144hz-video.dtsi"
-
+#include "dsi-panel-rm69260-dsc-fhd-plus-120hz-vid-boe.dtsi"
 #include "kera-sde-display-pinctrl.dtsi"
 
 &soc {
@@ -75,6 +75,49 @@
 			qcom,supply-enable-load = <200000>;
 			qcom,supply-disable-load = <0>;
 			qcom,supply-post-on-sleep = <0>;
+			qcom,supply-post-off-sleep = <2>;
+		};
+	};
+
+	dvdd_en: dvdd_en {
+		compatible = "qti-regulator-fixed";
+		regulator-name = "dvdd_en";
+		startup-delay-us = <0>;
+		enable-active-high;
+		regulator-boot-on;
+		gpio = <&tlmm 108 0>;
+	};
+	dsi_panel_pwr_supply_amoled_froggerpro: dsi_panel_pwr_supply_amoled_froggerpro {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1980000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <0>;
+		};
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "dvdd_en";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <2>;
+		};
+		qcom,panel-supply-entry@2 {
+			reg = <2>;
+			qcom,supply-name = "vci";
+			qcom,supply-min-voltage = <3000000>;
+			qcom,supply-max-voltage = <3544000>;
+			qcom,supply-enable-load = <10000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-post-on-sleep = <0>;
+			qcom,supply-pre-on-sleep = <10>;
+			qcom,supply-pre-off-sleep = <2>;
 			qcom,supply-post-off-sleep = <2>;
 		};
 	};
@@ -141,6 +184,32 @@
 };
 
 /* PHY TIMINGS REVISION YL with reduced margins */
+&dsi_rm69260_amoled_120hz_vid_boe {
+	qcom,dsi-select-clocks = "pll_byte_clk0", "pll_dsi_clk0";
+	qcom,dsi-supported-dfps-list = <144 120 90 60 30>;
+	qcom,mdss-dsi-pan-enable-dynamic-fps;
+	qcom,mdss-dsi-pan-fps-update = "dfps_immediate_porch_mode_both_hv_porch";
+	qcom,dsi-dfps-hfp-list = <100 204 204 204 2124>;
+	qcom,dsi-dfps-hbp-list = <12 12 12 12 12>;
+	qcom,dsi-dfps-hpw-list = <4 4 4 4 4>;
+	qcom,dsi-dfps-vbp-list = <62 62 62 62 62>;
+	qcom,dsi-dfps-vfp-list = <76 88 1072 3040 88>;
+	qcom,dsi-dfps-vpw-list = <2 2 2 2 2>;
+	qcom,mdss-dsi-panel-version = <25111>;
+	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
+	qcom,mdss-dsi-panel-status-command = [06 01 00 01 00 00 01 0a];
+	qcom,mdss-dsi-panel-status-command-state = "dsi_lp_mode";
+	qcom,mdss-dsi-panel-status-value = <0x9c>;
+	qcom,mdss-dsi-panel-status-read-length = <1>;
+	qcom,mdss-dsi-display-timings {
+		timing@0 {
+			qcom,mdss-dsi-panel-phy-timings = [00 2C 0C 0C 1D 1A 0C
+				0C 0B 02 04 00 24 11];
+			qcom,display-topology = <2 2 1>;
+			qcom,default-topology-index = <0>;
+		};
+	};
+};
 
 &dsi_vtdr6130_amoled_cmd {
 	qcom,dsi-select-clocks = "pll_byte_clk0", "pll_dsi_clk0";

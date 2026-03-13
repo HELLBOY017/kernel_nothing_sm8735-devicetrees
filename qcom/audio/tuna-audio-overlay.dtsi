@@ -10,7 +10,7 @@
 #include "tuna-lpi.dtsi"
 
 &lpass_cdc {
-	qcom,num-macros = <4>;
+	qcom,num-macros = <3>;
 	qcom,lpass-cdc-version = <7>;
 	#address-cells = <1>;
 	#size-cells = <1>;
@@ -170,6 +170,7 @@
 	};
 
 	wsa_macro: wsa-macro@6B00000 {
+		status = "disabled";
 		compatible = "qcom,lpass-cdc-wsa-macro";
 		reg = <0x6B00000 0x0>;
 		wsa_data_fs_ctl_reg = <0x6B6F000>;
@@ -207,6 +208,7 @@
 			qcom,swr-num-dev = <2>;
 			qcom,dynamic-port-map-supported = <0>;
 			wsa884x_0220: wsa884x@02170220 {
+				status = "disabled";
 				compatible = "qcom,wsa884x";
 				reg = <0x4 0x2170220>;
 				qcom,spkr-sd-n-node = <&wsa_spkr_en02>;
@@ -234,6 +236,7 @@
 			};
 
 			wsa884x_0221: wsa884x@02170221 {
+				status = "disabled";
 				compatible = "qcom,wsa884x";
 				reg = <0x4 0x2170221>;
 				qcom,spkr-sd-n-node = <&wsa_spkr_en13>;
@@ -264,7 +267,6 @@
 
 	wcd939x_codec: wcd939x-codec {
 		compatible = "qcom,wcd939x-codec";
-		status = "disabled";
 		qcom,split-codec = <1>;
 		qcom,rx_swr_ch_map = <0 HPH_L 0x1 0 HPH_L>,
 			<0 HPH_R 0x2 0 HPH_R>, <1 CLSH 0x1 0 CLSH>,
@@ -326,10 +328,10 @@
 
 		qcom,cdc-vdd-px-rem-supported = <1>;
 
-		qcom,cdc-micbias1-mv = <1800>;
-		qcom,cdc-micbias2-mv = <1800>;
-		qcom,cdc-micbias3-mv = <1800>;
-		qcom,cdc-micbias4-mv = <1800>;
+		qcom,cdc-micbias1-mv = <2700>;
+		qcom,cdc-micbias2-mv = <2700>;
+		qcom,cdc-micbias3-mv = <2700>;
+		qcom,cdc-micbias4-mv = <2700>;
 
 		qcom,cdc-static-supplies = "cdc-vdd-rx",
 					   "cdc-vdd-tx",
@@ -355,6 +357,7 @@
 	};
 
 	wcd9378_codec: wcd9378-codec {
+		status = "disabled";
 		compatible = "qcom,wcd9378-codec";
 		qcom,split-codec = <1>;
 		qcom,wcd-mode = <1>;
@@ -463,6 +466,8 @@
 			"AMIC3", "MIC BIAS3",
 			"AMIC4", "Analog Mic4",
 			"AMIC4", "MIC BIAS3",
+			"AMIC5", "Analog Mic5",
+			"AMIC5", "MIC BIAS4",
 			"VA AMIC1", "Analog Mic1",
 			"VA AMIC1", "VA MIC BIAS1",
 			"VA AMIC2", "Analog Mic2",
@@ -471,6 +476,8 @@
 			"VA AMIC3", "VA MIC BIAS3",
 			"VA AMIC4", "Analog Mic4",
 			"VA AMIC4", "VA MIC BIAS3",
+			"VA AMIC5", "Analog Mic5",
+			"VA AMIC5", "VA MIC BIAS4",
 			"TX DMIC0", "Digital Mic0",
 			"TX DMIC0", "MIC BIAS3",
 			"TX DMIC1", "Digital Mic1",
@@ -482,15 +489,10 @@
 			"IN1_HPHL", "HPHL_OUT",
 			"IN2_HPHR", "HPHR_OUT",
 			"IN3_AUX", "AUX_OUT",
-			"WSA SRC0_INP", "SRC0",
-			"WSA_TX DEC0_INP", "TX DEC0 MUX",
-			"WSA_TX DEC1_INP", "TX DEC1 MUX",
 			"RX_TX DEC0_INP", "TX DEC0 MUX",
 			"RX_TX DEC1_INP", "TX DEC1 MUX",
 			"RX_TX DEC2_INP", "TX DEC2 MUX",
 			"RX_TX DEC3_INP", "TX DEC3 MUX",
-			"SpkrLeft IN", "WSA_SPK1 OUT",
-			"SpkrRight IN", "WSA_SPK2 OUT",
 			"VA SWR_INPUT", "VA_SWR_CLK",
 			"VA_AIF1 CAP", "VA_SWR_CLK",
 			"VA_AIF2 CAP", "VA_SWR_CLK",
@@ -506,15 +508,14 @@
 		qcom,cdc-dmic01-gpios = <&cdc_dmic01_gpios>;
 		qcom,cdc-dmic23-gpios = <&cdc_dmic23_gpios>;
 		asoc-codec  = <&stub_codec>, <&lpass_cdc>,
-			<&wcd9378_codec>, <&wsa884x_0220>,
-			<&wsa884x_0221>;
+			      <&wcd939x_codec>;
 		asoc-codec-names = "msm-stub-codec.1", "lpass-cdc",
-				"wcd9378_codec", "wsa-codec1",
+				"wcd939x_codec", "wsa-codec1",
 				"wsa-codec2";
 		qcom,msm-mbhc-usbc-audio-supported = <0>;
 		qcom,msm-mbhc-hphl-swh = <1>;
 		qcom,msm-mbhc-gnd-swh = <1>;
-		qcom,wsa-max-devs = <2>;
+		qcom,wsa-max-devs = <0>;
 		qcom,msm_audio_ssr_devs = <&audio_gpr>, <&lpi_tlmm>,
 				  <&lpass_cdc>, <&lpass_bt_swr>;
 
@@ -530,17 +531,20 @@
 				&i2s0_sd0_sleep &i2s0_sd1_sleep>;
 		#gpio-cells = <0>;
 	};
-
 	fm_i2s1_gpios: fm_i2s1_pinctrl {
+		status = "disabled";
+	};
+
+	cdc_sec_mi2s_gpios: sec_mi2s_pinctrl {
+		status = "disabled";
 		compatible = "qcom,msm-cdc-pinctrl";
 		pinctrl-names = "aud_active", "aud_sleep";
 		pinctrl-0 = <&i2s1_sck_active &i2s1_ws_active
-				&i2s1_sd0_active>;
+				&i2s1_sd0_active &i2s1_sd1_active>;
 		pinctrl-1 = <&i2s1_sck_sleep &i2s1_ws_sleep
-				&i2s1_sd0_sleep>;
+				&i2s1_sd0_sleep &i2s1_sd1_sleep>;
 		#gpio-cells = <0>;
 	};
-
 	cdc_quat_mi2s_gpios: quat_mi2s_pinctrl {
 		status = "disabled";
 		compatible = "qcom,msm-cdc-pinctrl";
@@ -686,6 +690,7 @@
 
 &soc {
 	wsa_spkr_en02: wsa_spkr_en1_pinctrl {
+		status = "disabled";
 		compatible = "qcom,msm-cdc-pinctrl";
 		pinctrl-names = "aud_active", "aud_sleep";
 		pinctrl-0 = <&spkr_1_sd_n_active>;
@@ -694,6 +699,7 @@
 	};
 
 	wsa_spkr_en13: wsa_spkr_en2_pinctrl {
+		status = "disabled";
 		compatible = "qcom,msm-cdc-pinctrl";
 		pinctrl-names = "aud_active", "aud_sleep";
 		pinctrl-0 = <&spkr_2_sd_n_active>;
