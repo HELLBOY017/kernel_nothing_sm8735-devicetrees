@@ -15,6 +15,8 @@ add-overlays = $(foreach o,$1,$(foreach b,$2,$(eval $(basename $b)-$(basename $o
 
 ifneq ($(CONFIG_ARCH_QTI_VM), y)
 
+ifneq ($(CONFIG_NOTHING_IS_METROID), y)
+
 SUN_BASE_DTB += sun.dtb sun-v2.dtb sun-tp.dtb sun-tp-v2.dtb
 SUN_APQ_BASE_DTB += sunp.dtb sunp-v2.dtb sunp-tp.dtb sunp-tp-v2.dtb
 
@@ -52,29 +54,21 @@ sun-dtb-$(CONFIG_ARCH_SUN) += \
 	$(call add-overlays, $(SUN_BOARDS) $(APQ_SUN_BOARDS),$(SUN_APQ_BASE_DTB))
 sun-overlays-dtb-$(CONFIG_ARCH_SUN) += $(SUN_BOARDS) $(NOAPQ_SUN_BOARDS) $(SUN_BASE_DTB) $(SUN_APQ_BASE_DTB)
 
-TUNA_BASE_DTB += tuna.dtb tuna7.dtb
-TUNA_APQ_BASE_DTB += tunap.dtb
+endif
+
+ifeq ($(CONFIG_NOTHING_IS_METROID), y)
+
+TUNA_BASE_DTB += tuna.dtb
 TUNA_BOARDS += \
-		tuna-atp-overlay.dtbo \
-		tuna-cdp-overlay.dtbo \
-		tuna-mtp-kiwi-harmonium-overlay.dtbo \
-		tuna-mtp-kiwi-overlay.dtbo \
-		tuna-mtp-nfc-overlay.dtbo \
-		tuna-mtp-overlay.dtbo \
-		tuna-mtp-qmp1000-overlay.dtbo \
-		tuna-mtp-kiwi-pmd802x-overlay.dtbo \
-		tuna-qrd-overlay.dtbo \
-		tuna-rcm-kiwi-overlay.dtbo \
-		tuna-rcm-overlay.dtbo
+		tuna-qrd-overlay.dtbo
 
-NOAPQ_TUNA_BOARDS += \
-		tuna-rumi-overlay.dtbo
-
-sun-dtb-$(CONFIG_ARCH_TUNA) +=  \
-        $(call add-overlays, $(TUNA_BOARDS) $(NOAPQ_TUNA_BOARDS),$(TUNA_BASE_DTB)) \
-	$(call add-overlays, $(TUNA_BOARDS) $(APQ_TUNA_BOARDS),$(TUNA_APQ_BASE_DTB))
-sun-overlays-dtb-$(CONFIG_ARCH_TUNA) += $(TUNA_BOARDS) $(NOAPQ_TUNA_BOARDS) $(TUNA_BASE_DTB) $(TUNA_APQ_BASE_DTB)
+sun-dtb-$(CONFIG_ARCH_TUNA) += $(call add-overlays, $(TUNA_BOARDS), $(TUNA_BASE_DTB))
+sun-overlays-dtb-$(CONFIG_ARCH_TUNA) += $(TUNA_BOARDS) $(TUNA_BASE_DTB)
 dtb-y += $(sun-dtb-y)
+
+endif
+
+ifneq ($(CONFIG_NOTHING_IS_METROID), y)
 
 ifeq ($(CONFIG_ARCH_KERA_LE), y)
 
@@ -172,6 +166,8 @@ sun-dtb-$(CONFIG_ARCH_KERA) +=  \
 	$(call add-overlays, $(KERA_BOARDS) $(NOAPQ_KERA_BOARDS),$(KERA_BASE_DTB)) \
 	$(call add-overlays, $(KERA_BOARDS) $(APQ_KERA_BOARDS),$(KERA_APQ_BASE_DTB))
 sun-overlays-dtb-$(CONFIG_ARCH_KERA) += $(KERA_BOARDS) $(NOAPQ_KERA_BOARDS) $(KERA_BASE_DTB) $(KERA_APQ_BASE_DTB)
+
+endif
 
 dtb-y += $(sun-dtb-y)
 
